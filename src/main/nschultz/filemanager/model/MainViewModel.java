@@ -15,6 +15,8 @@ package main.nschultz.filemanager.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import main.nschultz.filemanager.FileManagerApp;
 
 import java.io.File;
@@ -67,6 +69,13 @@ public class MainViewModel {
             drives.add(drive.getAbsolutePath());
         }
         return drives;
+    }
+
+    public void copyStringToClipBoard(String stringToCopy) {
+        Clipboard clipboard = Clipboard.getSystemClipboard();
+        ClipboardContent clipboardContent = new ClipboardContent();
+        clipboardContent.putString(stringToCopy);
+        clipboard.setContent(clipboardContent);
     }
 
     private String getFileName(Path path) {

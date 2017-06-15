@@ -22,6 +22,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
@@ -252,5 +254,15 @@ public class MainViewController implements Initializable {
         } catch (IOException ex) {
             Logger.getLogger("AboutDialog").log(Level.SEVERE, ex.toString());
         }
+    }
+
+    @FXML
+    private void contextCopyItemLeft_onAction(ActionEvent event) {
+        model.copyStringToClipBoard(pathFieldLeft.getText());
+    }
+
+    @FXML
+    private void contextCopyItemRight_onAction(ActionEvent event) {
+        model.copyStringToClipBoard(pathFieldRight.getText());
     }
 }

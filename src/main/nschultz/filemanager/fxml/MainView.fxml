@@ -73,6 +73,15 @@ DEALINGS IN THE SOFTWARE.
                                                     <BorderPane.margin>
                                                         <Insets right="5.0"/>
                                                     </BorderPane.margin>
+                                                    <contextMenu>
+                                                        <ContextMenu>
+                                                            <items>
+                                                                <MenuItem mnemonicParsing="false"
+                                                                          onAction="#contextCopyItemLeft_onAction"
+                                                                          text="Copy"/>
+                                                            </items>
+                                                        </ContextMenu>
+                                                    </contextMenu>
                                                 </Label>
                                             </center>
                                             <left>
@@ -100,12 +109,20 @@ DEALINGS IN THE SOFTWARE.
                                                     <BorderPane.margin>
                                                         <Insets right="5.0"/>
                                                     </BorderPane.margin>
+                                                    <contextMenu>
+                                                        <ContextMenu>
+                                                            <items>
+                                                                <MenuItem mnemonicParsing="false" text="Copy"
+                                                                          onAction="#contextCopyItemRight_onAction"/>
+                                                            </items>
+                                                        </ContextMenu>
+                                                    </contextMenu>
                                                 </Label>
                                             </center>
                                             <left>
-                                                <ComboBox prefHeight="25.0" prefWidth="0.0"
-                                                          BorderPane.alignment="CENTER" fx:id="driveComboBoxRight"
-                                                          onAction="#driveComboBoxRight_onAction">
+                                                <ComboBox fx:id="driveComboBoxRight"
+                                                          onAction="#driveComboBoxRight_onAction" prefHeight="25.0"
+                                                          prefWidth="0.0" BorderPane.alignment="CENTER">
                                                     <BorderPane.margin>
                                                         <Insets bottom="5.0" left="5.0" top="5.0"/>
                                                     </BorderPane.margin>
