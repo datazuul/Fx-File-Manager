@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Copyright (c) 2017 Niklas Schultz
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
+-->
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720"
+            prefWidth="1420.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="main.nschultz.filemanager.controller.MainViewController">
+    <children>
+        <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <top>
+                <VBox>
+                    <children>
+                        <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+                            <menus>
+                                <Menu mnemonicParsing="false" text="File">
+                                    <items>
+                                        <MenuItem mnemonicParsing="false" onAction="#gotoStartingDirItem_onAction"
+                                                  text="Goto starting directory"/>
+                                        <MenuItem mnemonicParsing="false" onAction="#exitItem_onAction" text="Exit"/>
+                                    </items>
+                                </Menu>
+                                <Menu mnemonicParsing="false" text="Settings">
+                                    <items>
+                                        <MenuItem mnemonicParsing="false" text="Preferences"/>
+                                    </items>
+                                </Menu>
+                                <Menu mnemonicParsing="false" text="Help">
+                                    <items>
+                                        <MenuItem mnemonicParsing="false" onAction="#aboutItem_onAction" text="About"/>
+                                    </items>
+                                </Menu>
+                            </menus>
+                        </MenuBar>
+                    </children>
+                </VBox>
+            </top>
+            <center>
+                <GridPane gridLinesVisible="true" BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
+                    </rowConstraints>
+                    <children>
+                        <VBox alignment="CENTER" prefHeight="18.0" prefWidth="300.0">
+                            <children>
+                                <HBox alignment="CENTER" spacing="5.0">
+                                    <children>
+                                        <BorderPane prefHeight="30.0" prefWidth="320.0" HBox.hgrow="ALWAYS">
+                                            <center>
+                                                <Label fx:id="pathFieldLeft" text="Label" BorderPane.alignment="CENTER">
+                                                    <BorderPane.margin>
+                                                        <Insets right="5.0"/>
+                                                    </BorderPane.margin>
+                                                </Label>
+                                            </center>
+                                            <left>
+                                                <ComboBox fx:id="driveComboBoxLeft"
+                                                          onAction="#driveComboBoxLeft_onAction" prefHeight="36.0"
+                                                          prefWidth="50.0" BorderPane.alignment="CENTER">
+                                                    <BorderPane.margin>
+                                                        <Insets bottom="5.0" left="5.0" top="5.0"/>
+                                                    </BorderPane.margin>
+                                                </ComboBox>
+                                            </left>
+                                        </BorderPane>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="11.0" prefWidth="300.0" GridPane.columnIndex="1">
+                            <children>
+                                <HBox alignment="CENTER">
+                                    <children>
+                                        <BorderPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                            <center>
+                                                <Label fx:id="pathFieldRight" text="Label"
+                                                       BorderPane.alignment="CENTER">
+                                                    <BorderPane.margin>
+                                                        <Insets right="5.0"/>
+                                                    </BorderPane.margin>
+                                                </Label>
+                                            </center>
+                                            <left>
+                                                <ComboBox prefHeight="25.0" prefWidth="0.0"
+                                                          BorderPane.alignment="CENTER" fx:id="driveComboBoxRight"
+                                                          onAction="#driveComboBoxRight_onAction">
+                                                    <BorderPane.margin>
+                                                        <Insets bottom="5.0" left="5.0" top="5.0"/>
+                                                    </BorderPane.margin>
+                                                </ComboBox>
+                                            </left>
+                                        </BorderPane>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                        <TableView fx:id="tableViewLeft" prefHeight="200.0" prefWidth="200.0"
+                                   tableMenuButtonVisible="true" GridPane.rowIndex="1">
+                            <columns>
+                                <TableColumn fx:id="nameColLeft" editable="false" prefWidth="75.0" text="Name"/>
+                                <TableColumn fx:id="typeColLeft" editable="false" prefWidth="75.0" text="Type"/>
+                                <TableColumn fx:id="sizeColLeft" prefWidth="75.0" text="Size"/>
+                                <TableColumn fx:id="dateColLeft" editable="false" prefWidth="75.0" text="Date"/>
+                            </columns>
+                        </TableView>
+                        <TableView fx:id="tableViewRight" prefHeight="200.0" prefWidth="200.0"
+                                   tableMenuButtonVisible="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <columns>
+                                <TableColumn fx:id="nameColRight" editable="false" prefWidth="75.0" text="Name"/>
+                                <TableColumn fx:id="typeColRight" editable="false" prefWidth="75.0" text="Type"/>
+                                <TableColumn fx:id="sizeColRight" prefWidth="75.0" text="Size"/>
+                                <TableColumn fx:id="dateColRight" editable="false" prefWidth="75.0" text="Date"/>
+                            </columns>
+                        </TableView>
+                    </children>
+                </GridPane>
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>
