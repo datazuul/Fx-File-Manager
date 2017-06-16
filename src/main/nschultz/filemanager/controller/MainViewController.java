@@ -14,6 +14,7 @@ DEALINGS IN THE SOFTWARE.
 package main.nschultz.filemanager.controller;
 
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,8 +23,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
@@ -39,6 +38,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -131,11 +131,19 @@ public class MainViewController implements Initializable {
         tableView.getColumns().get(DATE_COLUMN).setCellValueFactory(new PropertyValueFactory<>("Date"));
 
         tableView.getItems().clear();
-        for (FileModel fileModel : list) {
-            if (Files.isReadable(Paths.get(fileModel.getAbsolutePath()))) { // @TODO make this configurable
-                tableView.getItems().add(fileModel);
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                for (FileModel fileModel : list) {
+                    if (Files.isReadable(Paths.get(fileModel.getAbsolutePath()))) { // @TODO make this configurable
+                        tableView.getItems().add(fileModel);
+                    }
+                    TimeUnit.MILLISECONDS.sleep(1);
+                }
+                return null;
             }
-        }
+        };
+        new Thread(task).start();
     }
 
     private void addMouseListenerToTableView(TableView<FileModel> tableView, Label pathField) {
