@@ -13,6 +13,7 @@ DEALINGS IN THE SOFTWARE.
  */
 package main.nschultz.filemanager.controller;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -136,7 +137,7 @@ public class MainViewController implements Initializable {
             protected Void call() throws Exception {
                 for (FileModel fileModel : list) {
                     if (Files.isReadable(Paths.get(fileModel.getAbsolutePath()))) { // @TODO make this configurable
-                        tableView.getItems().add(fileModel);
+                        Platform.runLater(() -> tableView.getItems().add(fileModel));
                     }
                     TimeUnit.MILLISECONDS.sleep(1);
                 }
