@@ -38,8 +38,12 @@ public class MainViewModel {
         return Files.list(path).collect(Collectors.toList());
     }
 
-    public Path getPreviousFile(Path dir) {
-        return dir.getParent().getParent() == null ? dir.getParent() : dir.getParent().getParent();
+    public Path getPreviousDirFromFile(Path file) {
+        return file.getNameCount() == 1 ? file.getParent() : file.getParent().getParent();
+    }
+
+    public Path getPreviousDirFromDir(Path dir) {
+        return dir.getParent() == null ? dir : dir.getParent();
     }
 
     public ObservableList<FileModel> createObservableListForTableViews(List<Path> files) throws IOException {

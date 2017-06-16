@@ -85,8 +85,8 @@ public class MainViewController implements Initializable {
 
         try {
             ObservableList<FileModel> list = model.createObservableListForTableViews(model.getFileList(startingPath));
-            populateTableView(tableViewLeft, list);
-            populateTableView(tableViewRight, list);
+            populateTableView(tableViewLeft, list, pathFieldLeft);
+            populateTableView(tableViewRight, list, pathFieldRight);
         } catch (IOException ex) {
             Logger.getLogger("population").log(Level.SEVERE, ex.toString());
         }
@@ -120,7 +120,7 @@ public class MainViewController implements Initializable {
         }
     }
 
-    private void populateTableView(TableView<FileModel> tableView, ObservableList<FileModel> list) {
+    private void populateTableView(TableView<FileModel> tableView, ObservableList<FileModel> list, Label pathField) {
         final int NAME_COLUMN = 0;
         final int TYPE_COLUMN = 1;
         final int SIZE_COLUMN = 2;
@@ -135,6 +135,9 @@ public class MainViewController implements Initializable {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
+                tableView.getItems().add(new FileModel("...", "<DIR>", "", "", model.getPreviousDirFromDir(
+                        Paths.get(pathField.getText())).toString()));
+
                 for (FileModel fileModel : list) {
                     if (Files.isReadable(Paths.get(fileModel.getAbsolutePath()))) { // @TODO make this configurable
                         Platform.runLater(() -> tableView.getItems().add(fileModel));
@@ -152,8 +155,6 @@ public class MainViewController implements Initializable {
             final int DOUBLE_CLICK = 2;
             if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == DOUBLE_CLICK) {
                 navigateForward(tableView, pathField);
-            } else if (event.getButton().equals(MouseButton.SECONDARY)) {
-                navigateBackwards(tableView, pathField);
             }
         });
     }
@@ -195,12 +196,12 @@ public class MainViewController implements Initializable {
         }
 
         updateGuiAccordingToDirectoryChange(tableView, pathField,
-                model.getPreviousFile(Paths.get(fileModel.getAbsolutePath())));
+                model.getPreviousDirFromFile(Paths.get(fileModel.getAbsolutePath())));
     }
 
     private void updateGuiAccordingToDirectoryChange(TableView<FileModel> tableView, Label pathField, Path file) {
         try {
-            populateTableView(tableView, model.createObservableListForTableViews(model.getFileList(file)));
+            populateTableView(tableView, model.createObservableListForTableViews(model.getFileList(file)), pathField);
             pathField.setText(file.toString());
             tableView.getSelectionModel().select(0);
         } catch (IOException ex) {
