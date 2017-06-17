@@ -67,10 +67,12 @@ public class MainViewModel {
         return Files.isRegularFile(path);
     }
 
-    public List<String> getAvailableDrives() {
+    public List<String> getAccessibleDrives() {
         List<String> drives = new ArrayList<>();
         for (File drive : File.listRoots()) {
-            drives.add(drive.getAbsolutePath());
+            if (Files.isReadable(drive.toPath())) {
+                drives.add(drive.getAbsolutePath());
+            }
         }
         return drives;
     }

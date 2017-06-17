@@ -93,7 +93,7 @@ public class MainViewController implements Initializable {
     }
 
     private void populateComboBox(ComboBox<String> comboBox) {
-        comboBox.getItems().addAll(model.getAvailableDrives());
+        comboBox.getItems().addAll(model.getAccessibleDrives());
         comboBox.getSelectionModel().selectFirst();
     }
 
