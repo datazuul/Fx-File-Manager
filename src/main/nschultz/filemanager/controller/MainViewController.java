@@ -202,26 +202,24 @@ public class MainViewController implements Initializable {
         }
     }
 
-
-    @FXML
-    private void driveComboBoxLeft_onAction(ActionEvent event) {
-        Path drive = Paths.get(driveComboBoxLeft.getSelectionModel().getSelectedItem());
-        pathFieldLeft.setText(drive.toAbsolutePath().toString());
+    private void loadDifferentDrive(ComboBox<String> driveComboBox, TableView<FileModel> tableView, Label pathField) {
+        Path drive = Paths.get(driveComboBox.getSelectionModel().getSelectedItem());
+        pathField.setText(drive.toAbsolutePath().toString());
         if (populateTask != null) {
             populateTask.cancel();
         }
-        updateGuiAccordingToDirectoryChange(tableViewLeft, pathFieldLeft, drive);
+        updateGuiAccordingToDirectoryChange(tableView, pathField, drive);
+    }
+
+    @FXML
+    private void driveComboBoxLeft_onAction(ActionEvent event) {
+        loadDifferentDrive(driveComboBoxLeft, tableViewLeft, pathFieldLeft);
     }
 
 
     @FXML
     private void driveComboBoxRight_onAction(ActionEvent event) {
-        Path drive = Paths.get(driveComboBoxRight.getSelectionModel().getSelectedItem());
-        pathFieldRight.setText(drive.toAbsolutePath().toString());
-        if (populateTask != null) {
-            populateTask.cancel();
-        }
-        updateGuiAccordingToDirectoryChange(tableViewRight, pathFieldRight, drive);
+        loadDifferentDrive(driveComboBoxRight, tableViewRight, pathFieldRight);
     }
 
     @FXML
