@@ -226,10 +226,14 @@ public class MainViewController implements Initializable {
 
     @FXML
     private void gotoStartingDirItem_onAction(ActionEvent event) {
+        Path startingDir = Paths.get("").toAbsolutePath();
+
         if (tableViewLeft.focusedProperty().get()) {
-            updateGuiAccordingToDirectoryChange(tableViewLeft, pathFieldLeft, Paths.get("").toAbsolutePath());
+            driveComboBoxLeft.getSelectionModel().select(startingDir.getRoot().toString());
+            updateGuiAccordingToDirectoryChange(tableViewLeft, pathFieldLeft, startingDir);
         } else {
-            updateGuiAccordingToDirectoryChange(tableViewRight, pathFieldRight, Paths.get("").toAbsolutePath());
+            driveComboBoxRight.getSelectionModel().select(startingDir.getRoot().toString());
+            updateGuiAccordingToDirectoryChange(tableViewRight, pathFieldRight, startingDir);
         }
     }
 
