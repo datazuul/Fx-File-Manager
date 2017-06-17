@@ -45,7 +45,7 @@ public class PopulateService extends Service {
     protected Task createTask() {
         return new Task<Void>() {
             @Override
-            protected Void call() throws Exception {
+            protected synchronized Void call() throws Exception {
                 tableView.getItems().add(0, new FileModel("...", "<DIR>", "", "", model.getPreviousDirFromDir(
                         Paths.get(pathField.getText())).toString()));
                 for (FileModel fileModel : list) {
