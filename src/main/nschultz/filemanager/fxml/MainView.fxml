@@ -14,7 +14,6 @@ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WIT
 DEALINGS IN THE SOFTWARE.
 -->
 
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -86,8 +85,8 @@ DEALINGS IN THE SOFTWARE.
                                             </center>
                                             <left>
                                                 <ComboBox fx:id="driveComboBoxLeft"
-                                                          onAction="#driveComboBoxLeft_onAction" prefHeight="36.0"
-                                                          prefWidth="50.0" BorderPane.alignment="CENTER">
+                                                          onAction="#driveComboBoxLeft_onAction" prefHeight="25.0"
+                                                          prefWidth="65.0" BorderPane.alignment="CENTER">
                                                     <BorderPane.margin>
                                                         <Insets bottom="5.0" left="5.0" top="5.0"/>
                                                     </BorderPane.margin>
@@ -112,8 +111,9 @@ DEALINGS IN THE SOFTWARE.
                                                     <contextMenu>
                                                         <ContextMenu>
                                                             <items>
-                                                                <MenuItem mnemonicParsing="false" text="Copy"
-                                                                          onAction="#contextCopyItemRight_onAction"/>
+                                                                <MenuItem mnemonicParsing="false"
+                                                                          onAction="#contextCopyItemRight_onAction"
+                                                                          text="Copy"/>
                                                             </items>
                                                         </ContextMenu>
                                                     </contextMenu>
@@ -122,7 +122,7 @@ DEALINGS IN THE SOFTWARE.
                                             <left>
                                                 <ComboBox fx:id="driveComboBoxRight"
                                                           onAction="#driveComboBoxRight_onAction" prefHeight="25.0"
-                                                          prefWidth="0.0" BorderPane.alignment="CENTER">
+                                                          prefWidth="65.0" BorderPane.alignment="CENTER">
                                                     <BorderPane.margin>
                                                         <Insets bottom="5.0" left="5.0" top="5.0"/>
                                                     </BorderPane.margin>
