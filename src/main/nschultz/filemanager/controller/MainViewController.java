@@ -64,6 +64,7 @@ public class MainViewController implements Initializable {
     private TableView<FileModel> tableViewRight;
 
     private MainViewModel model;
+    private PopulateService populateTask;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -129,7 +130,7 @@ public class MainViewController implements Initializable {
         tableView.getColumns().get(DATE_COLUMN).setCellValueFactory(new PropertyValueFactory<>("Date"));
 
         tableView.getItems().clear();
-        PopulateService populateTask = new PopulateService(tableView, list, pathField, model);
+        populateTask = new PopulateService(tableView, list, pathField, model);
         populateTask.start();
     }
 
@@ -168,6 +169,11 @@ public class MainViewController implements Initializable {
         if (model.isFile(filePath)) {
             model.openFileWithAssociatedProgram(filePath);
         } else {
+            if (tableView.getSelectionModel().getSelectedIndex() == 0) {
+                if (populateTask != null) {
+                    populateTask.cancel();
+                }
+            }
             updateGuiAccordingToDirectoryChange(tableView, pathField, filePath);
         }
     }
@@ -178,6 +184,9 @@ public class MainViewController implements Initializable {
             return;
         }
 
+        if (populateTask != null) {
+            populateTask.cancel();
+        }
         updateGuiAccordingToDirectoryChange(tableView, pathField,
                 model.getPreviousDirFromFile(Paths.get(fileModel.getAbsolutePath())));
     }
@@ -198,6 +207,9 @@ public class MainViewController implements Initializable {
     private void driveComboBoxLeft_onAction(ActionEvent event) {
         Path drive = Paths.get(driveComboBoxLeft.getSelectionModel().getSelectedItem());
         pathFieldLeft.setText(drive.toAbsolutePath().toString());
+        if (populateTask != null) {
+            populateTask.cancel();
+        }
         updateGuiAccordingToDirectoryChange(tableViewLeft, pathFieldLeft, drive);
     }
 
@@ -206,6 +218,9 @@ public class MainViewController implements Initializable {
     private void driveComboBoxRight_onAction(ActionEvent event) {
         Path drive = Paths.get(driveComboBoxRight.getSelectionModel().getSelectedItem());
         pathFieldRight.setText(drive.toAbsolutePath().toString());
+        if (populateTask != null) {
+            populateTask.cancel();
+        }
         updateGuiAccordingToDirectoryChange(tableViewRight, pathFieldRight, drive);
     }
 
