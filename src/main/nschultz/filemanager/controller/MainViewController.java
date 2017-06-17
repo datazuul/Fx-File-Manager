@@ -13,9 +13,7 @@ DEALINGS IN THE SOFTWARE.
  */
 package main.nschultz.filemanager.controller;
 
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,14 +30,13 @@ import main.nschultz.filemanager.FileManagerApp;
 import main.nschultz.filemanager.model.FileModel;
 import main.nschultz.filemanager.model.MainViewModel;
 import main.nschultz.filemanager.util.AlertUtil;
+import main.nschultz.filemanager.util.PopulateService;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -132,22 +129,8 @@ public class MainViewController implements Initializable {
         tableView.getColumns().get(DATE_COLUMN).setCellValueFactory(new PropertyValueFactory<>("Date"));
 
         tableView.getItems().clear();
-        Task<Void> task = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                tableView.getItems().add(new FileModel("...", "<DIR>", "", "", model.getPreviousDirFromDir(
-                        Paths.get(pathField.getText())).toString()));
-
-                for (FileModel fileModel : list) {
-                    if (Files.isReadable(Paths.get(fileModel.getAbsolutePath()))) { // @TODO make this configurable
-                        Platform.runLater(() -> tableView.getItems().add(fileModel));
-                    }
-                    TimeUnit.MILLISECONDS.sleep(1);
-                }
-                return null;
-            }
-        };
-        new Thread(task).start();
+        PopulateService populateTask = new PopulateService(tableView, list, pathField, model);
+        populateTask.start();
     }
 
     private void addMouseListenerToTableView(TableView<FileModel> tableView, Label pathField) {
