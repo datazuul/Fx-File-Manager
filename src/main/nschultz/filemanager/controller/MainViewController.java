@@ -130,7 +130,7 @@ public class MainViewController implements Initializable {
         tableView.getColumns().get(DATE_COLUMN).setCellValueFactory(new PropertyValueFactory<>("Date"));
 
         tableView.getItems().clear();
-        populateTask = new PopulateService(tableView, list, pathField, model);
+        populateTask = new PopulateService(tableView, list, pathField);
         populateTask.start();
     }
 

@@ -36,12 +36,12 @@ public class PopulateService extends Service {
 
     private volatile int addedFileCount = 0;
 
-    public PopulateService(TableView<FileModel> tableView, ObservableList<FileModel> list, Label pathField,
-                           MainViewModel model) {
+    public PopulateService(TableView<FileModel> tableView, ObservableList<FileModel> list, Label pathField) {
         this.tableView = tableView;
         this.list = list;
         this.pathField = pathField;
-        this.model = model;
+
+        model = new MainViewModel();
     }
 
     @Override
@@ -49,6 +49,7 @@ public class PopulateService extends Service {
         return new Task<Void>() {
             @Override
             protected synchronized Void call() throws Exception {
+                tableView.setTooltip(null);
                 tableView.getItems().add(0, new FileModel("...", "<DIR>", "", "", model.getPreviousDirFromDir(
                         Paths.get(pathField.getText())).toString()));
                 for (FileModel fileModel : list) {
