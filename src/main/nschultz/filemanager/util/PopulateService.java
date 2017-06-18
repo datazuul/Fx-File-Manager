@@ -50,6 +50,7 @@ public class PopulateService extends Service {
             @Override
             protected synchronized Void call() throws Exception {
                 tableView.setTooltip(null);
+                addedFileCount = 0;
                 tableView.getItems().add(0, new FileModel("...", "<DIR>", "", "", model.getPreviousDirFromDir(
                         Paths.get(pathField.getText())).toString()));
                 for (FileModel fileModel : list) {
