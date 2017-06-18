@@ -17,6 +17,7 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
@@ -49,10 +50,12 @@ public class PopulateService extends Service {
         return new Task<Void>() {
             @Override
             protected synchronized Void call() throws Exception {
-                tableView.setTooltip(null);
                 addedFileCount = 0;
-                tableView.getItems().add(0, new FileModel("...", "<DIR>", "", "", model.getPreviousDirFromDir(
-                        Paths.get(pathField.getText())).toString()));
+                tableView.setTooltip(null);
+                tableView.getScene().setCursor(Cursor.WAIT);
+                tableView.getItems().add(0, new FileModel("...", "<DIR>", "", "",
+                        model.getPreviousDirFromDir(Paths.get(pathField.getText())).toString()));
+
                 for (FileModel fileModel : list) {
                     if (Files.isReadable(Paths.get(fileModel.getAbsolutePath()))) { // @TODO make this configurable
                         Platform.runLater(() -> tableView.getItems().add(fileModel));
@@ -67,6 +70,7 @@ public class PopulateService extends Service {
 
     @Override
     protected void succeeded() {
+        tableView.getScene().setCursor(Cursor.DEFAULT);
         tableView.setTooltip(new Tooltip(addedFileCount + " accessible file(s)"));
     }
 }
