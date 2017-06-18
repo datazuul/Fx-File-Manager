@@ -18,6 +18,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
@@ -52,7 +53,16 @@ public class PopulateService extends Service {
             protected synchronized Void call() throws Exception {
                 addedFileCount = 0;
                 tableView.setTooltip(null);
-                tableView.getScene().setCursor(Cursor.WAIT);
+
+                Scene scene = tableView.getScene();
+                // sometimes the scene is NULL
+                // seems to only happen at the start of the application therefore it is likely that
+                // the scene is not fully initialized at this point
+                // Anyway for now just prevent NPE which would cause the service to crash
+                if (scene != null) {
+                    scene.setCursor(Cursor.WAIT);
+                }
+
                 tableView.getItems().add(0, new FileModel("...", "<DIR>", "", "",
                         model.getPreviousDirFromDir(Paths.get(pathField.getText())).toString()));
 
