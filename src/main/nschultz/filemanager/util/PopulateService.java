@@ -19,6 +19,7 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import main.nschultz.filemanager.model.FileModel;
 import main.nschultz.filemanager.model.MainViewModel;
 
@@ -32,6 +33,8 @@ public class PopulateService extends Service {
     private ObservableList<FileModel> list;
     private Label pathField;
     private MainViewModel model;
+
+    private volatile int addedFileCount = 0;
 
     public PopulateService(TableView<FileModel> tableView, ObservableList<FileModel> list, Label pathField,
                            MainViewModel model) {
@@ -51,11 +54,17 @@ public class PopulateService extends Service {
                 for (FileModel fileModel : list) {
                     if (Files.isReadable(Paths.get(fileModel.getAbsolutePath()))) { // @TODO make this configurable
                         Platform.runLater(() -> tableView.getItems().add(fileModel));
+                        addedFileCount++;
                     }
                     TimeUnit.MILLISECONDS.sleep(1);
                 }
                 return null;
             }
         };
+    }
+
+    @Override
+    protected void succeeded() {
+        tableView.setTooltip(new Tooltip(addedFileCount + " accessible file(s)"));
     }
 }
