@@ -53,16 +53,7 @@ public class PopulateService extends Service {
             protected synchronized Void call() throws Exception {
                 addedFileCount = 0;
                 tableView.setTooltip(null);
-
-                Scene scene = tableView.getScene();
-                // sometimes the scene is NULL
-                // seems to only happen at the start of the application therefore it is likely that
-                // the scene is not fully initialized at this point
-                // Anyway for now just prevent NPE which would cause the service to crash
-                if (scene != null) {
-                    scene.setCursor(Cursor.WAIT);
-                }
-
+                tableView.setCursor(Cursor.WAIT);
                 tableView.getItems().add(0, new FileModel("...", "<DIR>", "", "",
                         model.getPreviousDirFromDir(Paths.get(pathField.getText())).toString()));
 
@@ -80,7 +71,7 @@ public class PopulateService extends Service {
 
     @Override
     protected void succeeded() {
-        tableView.getScene().setCursor(Cursor.DEFAULT);
+        tableView.setCursor(Cursor.DEFAULT);
         tableView.setTooltip(new Tooltip(addedFileCount + " accessible file(s)"));
     }
 }
