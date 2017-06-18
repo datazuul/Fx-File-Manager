@@ -84,7 +84,7 @@ DEALINGS IN THE SOFTWARE.
                                                 </Label>
                                             </center>
                                             <left>
-                                                <ComboBox fx:id="driveComboBoxLeft"
+                                                <ComboBox fx:id="driveComboBoxLeft" focusTraversable="false"
                                                           onAction="#driveComboBoxLeft_onAction" prefHeight="25.0"
                                                           prefWidth="65.0" BorderPane.alignment="CENTER">
                                                     <BorderPane.margin>
@@ -120,7 +120,7 @@ DEALINGS IN THE SOFTWARE.
                                                 </Label>
                                             </center>
                                             <left>
-                                                <ComboBox fx:id="driveComboBoxRight"
+                                                <ComboBox fx:id="driveComboBoxRight" focusTraversable="false"
                                                           onAction="#driveComboBoxRight_onAction" prefHeight="25.0"
                                                           prefWidth="65.0" BorderPane.alignment="CENTER">
                                                     <BorderPane.margin>
