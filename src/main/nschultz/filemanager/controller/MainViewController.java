@@ -169,10 +169,8 @@ public class MainViewController implements Initializable {
         if (model.isFile(filePath)) {
             model.openFileWithAssociatedProgram(filePath);
         } else {
-            if (tableView.getSelectionModel().getSelectedIndex() == 0) {
-                if (populateTask != null) {
-                    populateTask.cancel();
-                }
+            if (populateTask != null) {
+                populateTask.cancel();
             }
             updateGuiAccordingToDirectoryChange(tableView, pathField, filePath);
         }
