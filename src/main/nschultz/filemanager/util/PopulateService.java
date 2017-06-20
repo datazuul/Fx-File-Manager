@@ -18,7 +18,6 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
@@ -54,8 +53,11 @@ public class PopulateService extends Service {
                 addedFileCount = 0;
                 tableView.setTooltip(null);
                 tableView.setCursor(Cursor.WAIT);
-                tableView.getItems().add(0, new FileModel("...", "<DIR>", "", "",
-                        model.getPreviousDirFromDir(Paths.get(pathField.getText())).toString()));
+                Platform.runLater(() -> {
+                    tableView.getItems().clear();
+                    tableView.getItems().add(0, new FileModel("...", "<DIR>", "", "",
+                            model.getPreviousDirFromDir(Paths.get(pathField.getText())).toString()));
+                });
 
                 for (FileModel fileModel : list) {
                     if (Files.isReadable(Paths.get(fileModel.getAbsolutePath()))) { // @TODO make this configurable
