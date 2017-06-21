@@ -14,6 +14,7 @@ DEALINGS IN THE SOFTWARE.
 package main.nschultz.filemanager.util;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -59,13 +60,19 @@ public class PopulateService extends Service {
                             model.getPreviousDirFromDir(Paths.get(pathField.getText())).toString()));
                 });
 
+                ObservableList<FileModel> resultList = FXCollections.observableArrayList();
                 for (FileModel fileModel : list) {
+                    if(isCancelled()){
+                        resultList.clear();
+                        return null;
+                    }
                     if (Files.isReadable(Paths.get(fileModel.getAbsolutePath()))) { // @TODO make this configurable
-                        Platform.runLater(() -> tableView.getItems().add(fileModel));
+                        resultList.add(fileModel);
                         addedFileCount++;
                     }
-                    TimeUnit.MILLISECONDS.sleep(1);
                 }
+
+                Platform.runLater(() -> tableView.getItems().addAll(resultList));
                 return null;
             }
         };
