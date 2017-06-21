@@ -27,7 +27,6 @@ import main.nschultz.filemanager.model.MainViewModel;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
 
 public class PopulateService extends Service {
 
@@ -38,12 +37,19 @@ public class PopulateService extends Service {
 
     private volatile int addedFileCount = 0;
 
-    public PopulateService(TableView<FileModel> tableView, ObservableList<FileModel> list, Label pathField) {
+    public PopulateService(TableView<FileModel> tableView, Label pathField) {
         this.tableView = tableView;
-        this.list = list;
         this.pathField = pathField;
 
         model = new MainViewModel();
+    }
+
+    public void setTableView(TableView<FileModel> tableView) {
+        this.tableView = tableView;
+    }
+
+    public void setPathField(Label pathField) {
+        this.pathField = pathField;
     }
 
     @Override
@@ -60,9 +66,12 @@ public class PopulateService extends Service {
                             model.getPreviousDirFromDir(Paths.get(pathField.getText())).toString()));
                 });
 
+                ObservableList<FileModel> list = model.createObservableListForTableViews(
+                        model.getFileList(Paths.get(pathField.getText())));
+
                 ObservableList<FileModel> resultList = FXCollections.observableArrayList();
                 for (FileModel fileModel : list) {
-                    if(isCancelled()){
+                    if (isCancelled()) {
                         resultList.clear();
                         return null;
                     }
@@ -82,5 +91,21 @@ public class PopulateService extends Service {
     protected void succeeded() {
         tableView.setCursor(Cursor.DEFAULT);
         tableView.setTooltip(new Tooltip(addedFileCount + " accessible file(s)"));
+        reset();
+    }
+
+    @Override
+    protected void cancelled() {
+        tableView.setCursor(Cursor.DEFAULT);
+        tableView.setTooltip(new Tooltip(null));
+        reset();
+    }
+
+    @Override
+    protected void failed() {
+        getException().printStackTrace();
+        tableView.setCursor(Cursor.DEFAULT);
+        tableView.setTooltip(new Tooltip(null));
+        reset();
     }
 }

@@ -14,7 +14,9 @@ DEALINGS IN THE SOFTWARE.
 package main.nschultz.filemanager.controller;
 
 import javafx.collections.ObservableList;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -64,7 +66,9 @@ public class MainViewController implements Initializable {
     private TableView<FileModel> tableViewRight;
 
     private MainViewModel model;
-    private PopulateService populateTask;
+
+    private PopulateService populateTaskLeft;
+    private PopulateService populateTaskRight;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -81,13 +85,11 @@ public class MainViewController implements Initializable {
         ensureColumnsFillTableViewWidth(tableViewRight);
         enableMultipleSelectionInTableViews();
 
-        try {
-            ObservableList<FileModel> list = model.createObservableListForTableViews(model.getFileList(startingPath));
-            populateTableView(tableViewLeft, list, pathFieldLeft);
-            populateTableView(tableViewRight, list, pathFieldRight);
-        } catch (IOException ex) {
-            Logger.getLogger("population").log(Level.SEVERE, ex.toString());
-        }
+        populateTaskLeft = new PopulateService(tableViewLeft, pathFieldLeft);
+        populateTaskRight = new PopulateService(tableViewRight, pathFieldRight);
+
+        populateTableView(tableViewLeft, pathFieldLeft);
+        populateTableView(tableViewRight, pathFieldRight);
 
         addInputListenersToTableView();
     }
@@ -118,7 +120,7 @@ public class MainViewController implements Initializable {
         }
     }
 
-    private void populateTableView(TableView<FileModel> tableView, ObservableList<FileModel> list, Label pathField) {
+    private void populateTableView(TableView<FileModel> tableView, Label pathField) {
         final int NAME_COLUMN = 0;
         final int TYPE_COLUMN = 1;
         final int SIZE_COLUMN = 2;
@@ -130,8 +132,22 @@ public class MainViewController implements Initializable {
         tableView.getColumns().get(DATE_COLUMN).setCellValueFactory(new PropertyValueFactory<>("Date"));
 
         tableView.getItems().clear();
-        populateTask = new PopulateService(tableView, list, pathField);
-        populateTask.start();
+
+        if (tableView == tableViewLeft) {
+            if (populateTaskLeft.isRunning()) {
+                populateTaskLeft.cancel();
+            }
+            populateTaskLeft.setTableView(tableView);
+            populateTaskLeft.setPathField(pathField);
+            populateTaskLeft.start();
+        } else if (tableView == tableViewRight) {
+            if (populateTaskRight.isRunning()) {
+                populateTaskRight.cancel();
+            }
+            populateTaskRight.setTableView(tableView);
+            populateTaskRight.setPathField(pathField);
+            populateTaskRight.start();
+        }
     }
 
     private void addMouseListenerToTableView(TableView<FileModel> tableView, Label pathField) {
@@ -169,9 +185,6 @@ public class MainViewController implements Initializable {
         if (model.isFile(filePath)) {
             model.openFileWithAssociatedProgram(filePath);
         } else {
-            if (populateTask != null) {
-                populateTask.cancel();
-            }
             updateGuiAccordingToDirectoryChange(tableView, pathField, filePath);
         }
     }
@@ -182,30 +195,19 @@ public class MainViewController implements Initializable {
             return;
         }
 
-        if (populateTask != null) {
-            populateTask.cancel();
-        }
         updateGuiAccordingToDirectoryChange(tableView, pathField,
                 model.getPreviousDirFromFile(Paths.get(fileModel.getAbsolutePath())));
     }
 
     private void updateGuiAccordingToDirectoryChange(TableView<FileModel> tableView, Label pathField, Path file) {
-        try {
-            populateTableView(tableView, model.createObservableListForTableViews(model.getFileList(file)), pathField);
-            pathField.setText(file.toString());
-            tableView.getSelectionModel().select(0);
-        } catch (IOException ex) {
-            Logger.getLogger("navigation").log(Level.SEVERE, ex.toString());
-            ex.printStackTrace(System.err);
-        }
+        populateTableView(tableView, pathField);
+        pathField.setText(file.toString());
+        tableView.getSelectionModel().select(0);
     }
 
     private void loadDifferentDrive(ComboBox<String> driveComboBox, TableView<FileModel> tableView, Label pathField) {
         Path drive = Paths.get(driveComboBox.getSelectionModel().getSelectedItem());
         pathField.setText(drive.toAbsolutePath().toString());
-        if (populateTask != null) {
-            populateTask.cancel();
-        }
         updateGuiAccordingToDirectoryChange(tableView, pathField, drive);
     }
 
