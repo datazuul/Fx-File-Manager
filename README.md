@@ -12,7 +12,7 @@ to use it.</b>
 
 ## Overview
 
-+![no image found](images/FxFileManager_v0.2.0.png)
+![no image found](images/FxFileManager_v0.2.0.png)
 
 
 
