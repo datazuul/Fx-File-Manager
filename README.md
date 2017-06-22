@@ -8,6 +8,14 @@ Just a quick note even though it is already written down in the MIT license this
 <b>I am not responsible for ANY damage this program might do. It is your own choice if you decide
 to use it.</b>
 
+
+
+## Overview
+
++![no image found](images/FxFileManager_v0.2.0.png)
+
+
+
 ## License
 
 MIT License
