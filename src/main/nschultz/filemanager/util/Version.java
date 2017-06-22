@@ -16,7 +16,7 @@ package main.nschultz.filemanager.util;
 public final class Version {
 
     public static final String MAJOR_RELEASE = "0";
-    public static final String MINOR_RELEASE = "1";
+    public static final String MINOR_RELEASE = "2";
     public static final String PATCH_LEVEL = "0";
 
     private Version() {
