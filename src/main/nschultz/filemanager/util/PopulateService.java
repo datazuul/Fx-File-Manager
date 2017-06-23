@@ -62,7 +62,7 @@ public class PopulateService extends Service {
                 tableView.setCursor(Cursor.WAIT);
                 Platform.runLater(() -> {
                     tableView.getItems().clear();
-                    tableView.getItems().add(0, new FileModel("...", "<DIR>", "", "",
+                    tableView.getItems().add(0, new FileModel("..", "<DIR>", "", "",
                             model.getPreviousDirFromDir(Paths.get(pathField.getText())).toString()));
                 });
 
