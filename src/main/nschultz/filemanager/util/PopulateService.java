@@ -33,7 +33,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class PopulateService extends Service {
+public class PopulateService extends Service<ObservableList<FileModel>> {
 
     private TableView<FileModel> tableView;
     private Label pathField;
@@ -54,10 +54,10 @@ public class PopulateService extends Service {
     }
 
     @Override
-    protected Task createTask() {
-        return new Task<Void>() {
+    protected Task<ObservableList<FileModel>> createTask() {
+        return new Task<ObservableList<FileModel>>() {
             @Override
-            protected synchronized Void call() throws Exception {
+            protected synchronized ObservableList<FileModel> call() throws Exception {
                 addedFileCount = 0;
                 Path dirPath = Paths.get(pathField.getText());
 
@@ -76,7 +76,7 @@ public class PopulateService extends Service {
                     for (Path entry : dirStream) {
                         if (isCancelled()) {
                             resultList.clear();
-                            return null;
+                            return resultList;
                         }
                         if (Files.isReadable(entry)) {
                             resultList.add(new FileModel(
@@ -96,7 +96,7 @@ public class PopulateService extends Service {
                     // now everything is done
                     updateProgress(resultList.size(), DIR_SIZE);
                 }
-                return null;
+                return resultList;
             }
         };
     }
