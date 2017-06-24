@@ -84,7 +84,9 @@ public class PopulateService extends Service {
                                     getFileType(entry),
                                     getFileSizeInBytes(entry),
                                     getFormattedTimeStamp(entry),
-                                    getAbsolutePath(entry)));
+                                    getAbsolutePath(entry))
+                            );
+
                             addedFileCount++;
                             // we subtract one because it is not added to the tableview yet
                             updateProgress(resultList.size() == 0 ? 1 : resultList.size() - 1, DIR_SIZE);
