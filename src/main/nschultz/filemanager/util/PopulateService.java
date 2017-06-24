@@ -69,6 +69,7 @@ public class PopulateService extends Service {
                 ObservableList<FileModel> list = model.createObservableListForTableViews(
                         model.getFileList(Paths.get(pathField.getText())));
 
+                final int LIST_SIZE = list.size();
                 ObservableList<FileModel> resultList = FXCollections.observableArrayList();
                 for (FileModel fileModel : list) {
                     if (isCancelled()) {
@@ -79,11 +80,14 @@ public class PopulateService extends Service {
                     if (Files.isReadable(Paths.get(fileModel.getAbsolutePath()))) { // @TODO make this configurable
                         resultList.add(fileModel);
                         addedFileCount++;
-                        updateProgress(resultList.size(), list.size());
+                        // we subtract one because it is not added to the tableview yet
+                        updateProgress(resultList.size() - 1, LIST_SIZE);
                     }
                 }
 
                 Platform.runLater(() -> tableView.getItems().addAll(resultList));
+                // now it is completely done
+                updateProgress(resultList.size(), LIST_SIZE);
                 return null;
             }
         };
