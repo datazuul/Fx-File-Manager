@@ -44,11 +44,11 @@ public class PopulateService extends Service {
         model = new MainViewModel();
     }
 
-    public void setTableView(TableView<FileModel> tableView) {
+    public final void setTableView(TableView<FileModel> tableView) {
         this.tableView = tableView;
     }
 
-    public void setPathField(Label pathField) {
+    public final void setPathField(Label pathField) {
         this.pathField = pathField;
     }
 
@@ -75,9 +75,11 @@ public class PopulateService extends Service {
                         resultList.clear();
                         return null;
                     }
+
                     if (Files.isReadable(Paths.get(fileModel.getAbsolutePath()))) { // @TODO make this configurable
                         resultList.add(fileModel);
                         addedFileCount++;
+                        updateProgress(resultList.size(), list.size());
                     }
                 }
 

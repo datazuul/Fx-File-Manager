@@ -14,9 +14,7 @@ DEALINGS IN THE SOFTWARE.
 package main.nschultz.filemanager.controller;
 
 import javafx.collections.ObservableList;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -65,6 +63,12 @@ public class MainViewController implements Initializable {
     @FXML
     private TableView<FileModel> tableViewRight;
 
+    @FXML
+    private ProgressIndicator progressIndicatorLeft;
+
+    @FXML
+    private ProgressIndicator progressIndicatorRight;
+
     private MainViewModel model;
 
     private PopulateService populateTaskLeft;
@@ -92,6 +96,15 @@ public class MainViewController implements Initializable {
         populateTableView(tableViewRight, pathFieldRight);
 
         addInputListenersToTableView();
+
+        bindProgressIndicatorsToPopulateServices();
+    }
+
+    private void bindProgressIndicatorsToPopulateServices() {
+        progressIndicatorLeft.visibleProperty().bind(populateTaskLeft.runningProperty());
+        progressIndicatorLeft.progressProperty().bind(populateTaskLeft.progressProperty());
+        progressIndicatorRight.visibleProperty().bind(populateTaskRight.runningProperty());
+        progressIndicatorRight.progressProperty().bind(populateTaskRight.progressProperty());
     }
 
     private void populateComboBox(ComboBox<String> comboBox) {
@@ -132,7 +145,6 @@ public class MainViewController implements Initializable {
         tableView.getColumns().get(DATE_COLUMN).setCellValueFactory(new PropertyValueFactory<>("Date"));
 
         tableView.getItems().clear();
-
         if (tableView == tableViewLeft) {
             if (populateTaskLeft.isRunning()) {
                 populateTaskLeft.cancel();
