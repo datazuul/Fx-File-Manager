@@ -58,9 +58,10 @@ public class PopulateService extends Service {
             @Override
             protected synchronized Void call() throws Exception {
                 addedFileCount = 0;
-                tableView.setTooltip(null);
-                tableView.setCursor(Cursor.WAIT);
+
                 Platform.runLater(() -> {
+                    tableView.setTooltip(null);
+                    tableView.setCursor(Cursor.WAIT);
                     tableView.getItems().clear();
                     tableView.getItems().add(0, new FileModel("..", "<DIR>", "", "",
                             model.getPreviousDirFromDir(Paths.get(pathField.getText())).toString()));
