@@ -37,8 +37,7 @@ public class PopulateService extends Service<ObservableList<FileModel>> {
 
     private TableView<FileModel> tableView;
     private Label pathField;
-
-    private volatile int addedFileCount = 0;
+    private ObservableList<FileModel> resultList;
 
     public PopulateService(TableView<FileModel> tableView, Label pathField) {
         this.tableView = tableView;
@@ -58,7 +57,6 @@ public class PopulateService extends Service<ObservableList<FileModel>> {
         return new Task<ObservableList<FileModel>>() {
             @Override
             protected synchronized ObservableList<FileModel> call() throws Exception {
-                addedFileCount = 0;
                 Path dirPath = Paths.get(pathField.getText());
 
                 Platform.runLater(() -> {
@@ -70,7 +68,7 @@ public class PopulateService extends Service<ObservableList<FileModel>> {
                 });
 
                 final long DIR_SIZE = Files.list(dirPath).count();
-                ObservableList<FileModel> resultList = FXCollections.observableArrayList();
+                resultList = FXCollections.observableArrayList();
 
                 try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(dirPath)) {
                     for (Path entry : dirStream) {
@@ -87,7 +85,6 @@ public class PopulateService extends Service<ObservableList<FileModel>> {
                                     getAbsolutePath(entry))
                             );
 
-                            addedFileCount++;
                             // we subtract one because it is not added to the tableview yet
                             updateProgress(resultList.size() == 0 ? 1 : resultList.size() - 1, DIR_SIZE);
                         }
@@ -105,7 +102,7 @@ public class PopulateService extends Service<ObservableList<FileModel>> {
     protected void succeeded() {
         Platform.runLater(() -> {
             tableView.setCursor(Cursor.DEFAULT);
-            tableView.setTooltip(new Tooltip(addedFileCount + " accessible file(s)"));
+            tableView.setTooltip(new Tooltip(resultList.size() + " accessible file(s)"));
         });
         reset();
     }
