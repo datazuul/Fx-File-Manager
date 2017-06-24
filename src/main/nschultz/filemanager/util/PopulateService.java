@@ -23,25 +23,26 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import main.nschultz.filemanager.model.FileModel;
-import main.nschultz.filemanager.model.MainViewModel;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class PopulateService extends Service {
 
     private TableView<FileModel> tableView;
-    private ObservableList<FileModel> list;
     private Label pathField;
-    private MainViewModel model;
 
     private volatile int addedFileCount = 0;
 
     public PopulateService(TableView<FileModel> tableView, Label pathField) {
         this.tableView = tableView;
         this.pathField = pathField;
-
-        model = new MainViewModel();
     }
 
     public final void setTableView(TableView<FileModel> tableView) {
@@ -58,37 +59,41 @@ public class PopulateService extends Service {
             @Override
             protected synchronized Void call() throws Exception {
                 addedFileCount = 0;
+                Path dirPath = Paths.get(pathField.getText());
 
                 Platform.runLater(() -> {
                     tableView.setTooltip(null);
                     tableView.setCursor(Cursor.WAIT);
                     tableView.getItems().clear();
                     tableView.getItems().add(0, new FileModel("..", "<DIR>", "", "",
-                            model.getPreviousDirFromDir(Paths.get(pathField.getText())).toString()));
+                            getPreviousDirFromDir(dirPath).toString()));
                 });
 
-                ObservableList<FileModel> list = model.createObservableListForTableViews(
-                        model.getFileList(Paths.get(pathField.getText())));
-
-                final int LIST_SIZE = list.size();
+                final long DIR_SIZE = Files.list(dirPath).count();
                 ObservableList<FileModel> resultList = FXCollections.observableArrayList();
-                for (FileModel fileModel : list) {
-                    if (isCancelled()) {
-                        resultList.clear();
-                        return null;
-                    }
 
-                    if (Files.isReadable(Paths.get(fileModel.getAbsolutePath()))) { // @TODO make this configurable
-                        resultList.add(fileModel);
-                        addedFileCount++;
-                        // we subtract one because it is not added to the tableview yet
-                        updateProgress(resultList.size() - 1, LIST_SIZE);
+                try (DirectoryStream<Path> dirStream = Files.newDirectoryStream(dirPath)) {
+                    for (Path entry : dirStream) {
+                        if (isCancelled()) {
+                            resultList.clear();
+                            return null;
+                        }
+                        if (Files.isReadable(entry)) {
+                            resultList.add(new FileModel(
+                                    getFileName(entry),
+                                    getFileType(entry),
+                                    getFileSizeInBytes(entry),
+                                    getFormattedTimeStamp(entry),
+                                    getAbsolutePath(entry)));
+                            addedFileCount++;
+                            // we subtract one because it is not added to the tableview yet
+                            updateProgress(resultList.size() == 0 ? 1 : resultList.size() - 1, DIR_SIZE);
+                        }
                     }
+                    Platform.runLater(() -> tableView.getItems().addAll(resultList));
+                    // now everything is done
+                    updateProgress(resultList.size(), DIR_SIZE);
                 }
-
-                Platform.runLater(() -> tableView.getItems().addAll(resultList));
-                // now it is completely done
-                updateProgress(resultList.size(), LIST_SIZE);
                 return null;
             }
         };
@@ -120,5 +125,30 @@ public class PopulateService extends Service {
             tableView.setTooltip(new Tooltip(null));
         });
         reset();
+    }
+
+    private String getFileName(Path path) {
+        return path.getFileName().toString();
+    }
+
+    private String getFileType(Path path) {
+        return Files.isRegularFile(path) ? "<FILE>" : "<DIR>";
+    }
+
+    private String getFileSizeInBytes(Path file) throws IOException {
+        return Files.isRegularFile(file) ? Files.size(file) + " Bytes" : "";
+    }
+
+    private String getAbsolutePath(Path path) {
+        return path.toAbsolutePath().toString();
+    }
+
+    private String getFormattedTimeStamp(Path path) {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(new File(
+                path.toAbsolutePath().toString()).lastModified()));
+    }
+
+    private Path getPreviousDirFromDir(Path dir) {
+        return dir.getParent() == null ? dir : dir.getParent();
     }
 }

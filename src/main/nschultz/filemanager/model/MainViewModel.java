@@ -13,50 +13,23 @@ DEALINGS IN THE SOFTWARE.
  */
 package main.nschultz.filemanager.model;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import main.nschultz.filemanager.FileManagerApp;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MainViewModel {
 
     public MainViewModel() {
     }
 
-    public List<Path> getFileList(Path path) throws IOException {
-        return Files.list(path).collect(Collectors.toList());
-    }
-
     public Path getPreviousDirFromFile(Path file) {
         return file.getNameCount() == 1 ? file.getParent() : file.getParent().getParent();
-    }
-
-    public Path getPreviousDirFromDir(Path dir) {
-        return dir.getParent() == null ? dir : dir.getParent();
-    }
-
-    public ObservableList<FileModel> createObservableListForTableViews(List<Path> files) throws IOException {
-        ObservableList<FileModel> list = FXCollections.observableArrayList();
-        for (Path path : files) {
-            list.add(new FileModel(
-                    getFileName(path),
-                    getFileType(path),
-                    getFileSizeInBytes(path),
-                    getFormattedTimeStamp(path),
-                    getAbsolutePath(path)));
-        }
-        return list;
     }
 
     public void openFileWithAssociatedProgram(Path filePath) {
@@ -82,26 +55,5 @@ public class MainViewModel {
         ClipboardContent clipboardContent = new ClipboardContent();
         clipboardContent.putString(stringToCopy);
         clipboard.setContent(clipboardContent);
-    }
-
-    private String getFileName(Path path) {
-        return path.getFileName().toString();
-    }
-
-    private String getFileType(Path path) {
-        return isFile(path) ? "<FILE>" : "<DIR>";
-    }
-
-    private String getFileSizeInBytes(Path file) throws IOException {
-        return isFile(file) ? Files.size(file) + " Bytes" : "";
-    }
-
-    private String getAbsolutePath(Path path) {
-        return path.toAbsolutePath().toString();
-    }
-
-    private String getFormattedTimeStamp(Path path) {
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(new File(
-                path.toAbsolutePath().toString()).lastModified()));
     }
 }
