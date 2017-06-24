@@ -96,23 +96,29 @@ public class PopulateService extends Service {
 
     @Override
     protected void succeeded() {
-        tableView.setCursor(Cursor.DEFAULT);
-        tableView.setTooltip(new Tooltip(addedFileCount + " accessible file(s)"));
+        Platform.runLater(() -> {
+            tableView.setCursor(Cursor.DEFAULT);
+            tableView.setTooltip(new Tooltip(addedFileCount + " accessible file(s)"));
+        });
         reset();
     }
 
     @Override
     protected void cancelled() {
-        tableView.setCursor(Cursor.DEFAULT);
-        tableView.setTooltip(new Tooltip(null));
+        Platform.runLater(() -> {
+            tableView.setCursor(Cursor.DEFAULT);
+            tableView.setTooltip(new Tooltip(null));
+        });
         reset();
     }
 
     @Override
     protected void failed() {
         getException().printStackTrace();
-        tableView.setCursor(Cursor.DEFAULT);
-        tableView.setTooltip(new Tooltip(null));
+        Platform.runLater(() -> {
+            tableView.setCursor(Cursor.DEFAULT);
+            tableView.setTooltip(new Tooltip(null));
+        });
         reset();
     }
 }
