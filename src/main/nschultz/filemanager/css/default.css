@@ -11,3 +11,8 @@
 .table-row-cell: selected {
     -fx-background-color: rgb(51, 174, 51);
 }
+
+.separator .line{
+    -fx-border-style: solid;
+    -fx-border-color: BLACK;
+}
