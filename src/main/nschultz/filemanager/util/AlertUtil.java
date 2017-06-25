@@ -17,6 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.effect.GaussianBlur;
 import javafx.stage.Stage;
 
@@ -43,6 +44,21 @@ public final class AlertUtil {
         root.setEffect(null);
 
         return result.isPresent() && result.get().equals(yesButton);
+    }
+
+    public static String displaySearchDialog(Stage stage) {
+        TextInputDialog searchDialog = new TextInputDialog();
+        searchDialog.initOwner(stage);
+        searchDialog.setTitle("Search");
+        searchDialog.setHeaderText("");
+        searchDialog.setContentText("Search for file...");
+        ButtonType search = new ButtonType("Search", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        searchDialog.getDialogPane().getButtonTypes().clear();
+        searchDialog.getDialogPane().getButtonTypes().addAll(search, cancel);
+        Optional<String> input = searchDialog.showAndWait();
+
+        return input.orElse("");
     }
 
 }

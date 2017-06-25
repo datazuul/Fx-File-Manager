@@ -23,6 +23,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -36,6 +38,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -179,7 +182,22 @@ public class MainViewController implements Initializable {
             if (event.getCode() == KeyCode.BACK_SPACE) {
                 navigateBackwards(tableView, pathField);
             }
+            if (new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN).match(event)) {
+                searchTableView(tableView);
+            }
         });
+    }
+
+    private void searchTableView(TableView<FileModel> tableView) {
+        String input = AlertUtil.displaySearchDialog((Stage) tableView.getScene().getWindow());
+        if (!input.isEmpty()) {
+            FileModel result = model.searchForFile(tableView.getItems(), input);
+            if (result != null) {
+                tableView.getSelectionModel().clearSelection();
+                tableView.getSelectionModel().select(result);
+                tableView.scrollTo(result);
+            }
+        }
     }
 
     private FileModel getSelectedFileModel(TableView<FileModel> tableView) {

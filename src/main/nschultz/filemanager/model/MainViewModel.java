@@ -13,6 +13,7 @@ DEALINGS IN THE SOFTWARE.
  */
 package main.nschultz.filemanager.model;
 
+import javafx.collections.ObservableList;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import main.nschultz.filemanager.FileManagerApp;
@@ -55,5 +56,14 @@ public class MainViewModel {
         ClipboardContent clipboardContent = new ClipboardContent();
         clipboardContent.putString(stringToCopy);
         clipboard.setContent(clipboardContent);
+    }
+
+    public FileModel searchForFile(ObservableList<FileModel> list, String name) {
+        for (FileModel fileModel : list) {
+            if (fileModel.getName().toLowerCase().contains(name.toLowerCase())) {
+                return fileModel;
+            }
+        }
+        return null;
     }
 }
