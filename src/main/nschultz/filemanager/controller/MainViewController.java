@@ -241,25 +241,44 @@ public class MainViewController implements Initializable {
         updateGuiAccordingToDirectoryChange(tableView, pathField, drive);
     }
 
+    private TableView<FileModel> getActiveTableView() {
+        return tableViewLeft.focusedProperty().get() ? tableViewLeft : tableViewRight;
+    }
+
     @FXML
     private void driveComboBoxLeft_onAction(ActionEvent event) {
         loadDifferentDrive(driveComboBoxLeft, tableViewLeft, pathFieldLeft);
     }
-
-
+    
     @FXML
     private void driveComboBoxRight_onAction(ActionEvent event) {
         loadDifferentDrive(driveComboBoxRight, tableViewRight, pathFieldRight);
     }
 
     @FXML
+    private void refreshItem_onAction(ActionEvent event) {
+        TableView<FileModel> activeTableView = getActiveTableView();
+        if (activeTableView == tableViewLeft) {
+            populateTableView(getActiveTableView(), pathFieldLeft);
+        } else if (activeTableView == tableViewRight) {
+            populateTableView(getActiveTableView(), pathFieldRight);
+        }
+    }
+
+    @FXML
+    private void searchItem_onAction(ActionEvent event) {
+        searchTableView(getActiveTableView());
+    }
+
+    @FXML
     private void gotoStartingDirItem_onAction(ActionEvent event) {
         Path startingDir = Paths.get("").toAbsolutePath();
 
-        if (tableViewLeft.focusedProperty().get()) {
+        TableView<FileModel> activeTableView = getActiveTableView();
+        if (activeTableView == tableViewLeft) {
             driveComboBoxLeft.getSelectionModel().select(startingDir.getRoot().toString());
             updateGuiAccordingToDirectoryChange(tableViewLeft, pathFieldLeft, startingDir);
-        } else {
+        } else if (activeTableView == tableViewRight) {
             driveComboBoxRight.getSelectionModel().select(startingDir.getRoot().toString());
             updateGuiAccordingToDirectoryChange(tableViewRight, pathFieldRight, startingDir);
         }
