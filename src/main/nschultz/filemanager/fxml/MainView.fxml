@@ -14,14 +14,16 @@ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WIT
 DEALINGS IN THE SOFTWARE.
 -->
 
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720" prefWidth="1420.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.nschultz.filemanager.controller.MainViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720"
+            prefWidth="1420.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="main.nschultz.filemanager.controller.MainViewController">
     <children>
-        <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <BorderPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                    AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <top>
                 <VBox>
                     <children>
@@ -29,20 +31,24 @@ DEALINGS IN THE SOFTWARE.
                             <menus>
                                 <Menu mnemonicParsing="false" text="File">
                                     <items>
-                              <MenuItem mnemonicParsing="false" text="Refresh" onAction="#refreshItem_onAction"/>
-                              <MenuItem mnemonicParsing="false" onAction="#searchItem_onAction" text="Search" />
-                                        <MenuItem mnemonicParsing="false" onAction="#gotoStartingDirItem_onAction" text="Goto starting directory" />
-                                        <MenuItem mnemonicParsing="false" onAction="#exitItem_onAction" text="Exit" />
+                                        <MenuItem mnemonicParsing="false" onAction="#refreshItem_onAction"
+                                                  text="Refresh"/>
+                                        <MenuItem mnemonicParsing="false" onAction="#searchItem_onAction"
+                                                  text="Search"/>
+                                        <MenuItem mnemonicParsing="false" onAction="#gotoStartingDirItem_onAction"
+                                                  text="Goto starting directory"/>
+                                        <SeparatorMenuItem mnemonicParsing="false"/>
+                                        <MenuItem mnemonicParsing="false" onAction="#exitItem_onAction" text="Exit"/>
                                     </items>
                                 </Menu>
                                 <Menu mnemonicParsing="false" text="Settings">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" text="Preferences" />
+                                        <MenuItem mnemonicParsing="false" text="Preferences"/>
                                     </items>
                                 </Menu>
                                 <Menu mnemonicParsing="false" text="Help">
                                     <items>
-                                        <MenuItem mnemonicParsing="false" onAction="#aboutItem_onAction" text="About" />
+                                        <MenuItem mnemonicParsing="false" onAction="#aboutItem_onAction" text="About"/>
                                     </items>
                                 </Menu>
                             </menus>
@@ -53,12 +59,12 @@ DEALINGS IN THE SOFTWARE.
             <center>
                 <GridPane gridLinesVisible="true" BorderPane.alignment="CENTER">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS"/>
                     </rowConstraints>
                     <children>
                         <VBox alignment="CENTER" prefHeight="18.0" prefWidth="300.0">
@@ -69,27 +75,32 @@ DEALINGS IN THE SOFTWARE.
                                             <center>
                                                 <Label fx:id="pathFieldLeft" text="Label" BorderPane.alignment="CENTER">
                                                     <BorderPane.margin>
-                                                        <Insets right="5.0" />
+                                                        <Insets right="5.0"/>
                                                     </BorderPane.margin>
                                                     <contextMenu>
                                                         <ContextMenu>
                                                             <items>
-                                                                <MenuItem mnemonicParsing="false" onAction="#contextCopyItemLeft_onAction" text="Copy" />
+                                                                <MenuItem mnemonicParsing="false"
+                                                                          onAction="#contextCopyItemLeft_onAction"
+                                                                          text="Copy"/>
                                                             </items>
                                                         </ContextMenu>
                                                     </contextMenu>
                                                 </Label>
                                             </center>
                                             <left>
-                                                <ComboBox fx:id="driveComboBoxLeft" focusTraversable="false" onAction="#driveComboBoxLeft_onAction" prefHeight="25.0" prefWidth="65.0" BorderPane.alignment="CENTER">
+                                                <ComboBox fx:id="driveComboBoxLeft" focusTraversable="false"
+                                                          onAction="#driveComboBoxLeft_onAction" prefHeight="25.0"
+                                                          prefWidth="65.0" BorderPane.alignment="CENTER">
                                                     <BorderPane.margin>
-                                                        <Insets bottom="5.0" left="5.0" top="5.0" />
+                                                        <Insets bottom="5.0" left="5.0" top="5.0"/>
                                                     </BorderPane.margin>
                                                 </ComboBox>
                                             </left>
-                                 <right>
-                                    <ProgressIndicator fx:id="progressIndicatorLeft" progress="0.0" visible="false" BorderPane.alignment="CENTER" />
-                                 </right>
+                                            <right>
+                                                <ProgressIndicator fx:id="progressIndicatorLeft" progress="0.0"
+                                                                   visible="false" BorderPane.alignment="CENTER"/>
+                                            </right>
                                         </BorderPane>
                                     </children>
                                 </HBox>
@@ -101,48 +112,56 @@ DEALINGS IN THE SOFTWARE.
                                     <children>
                                         <BorderPane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                             <center>
-                                                <Label fx:id="pathFieldRight" text="Label" BorderPane.alignment="CENTER">
+                                                <Label fx:id="pathFieldRight" text="Label"
+                                                       BorderPane.alignment="CENTER">
                                                     <BorderPane.margin>
-                                                        <Insets right="5.0" />
+                                                        <Insets right="5.0"/>
                                                     </BorderPane.margin>
                                                     <contextMenu>
                                                         <ContextMenu>
                                                             <items>
-                                                                <MenuItem mnemonicParsing="false" onAction="#contextCopyItemRight_onAction" text="Copy" />
+                                                                <MenuItem mnemonicParsing="false"
+                                                                          onAction="#contextCopyItemRight_onAction"
+                                                                          text="Copy"/>
                                                             </items>
                                                         </ContextMenu>
                                                     </contextMenu>
                                                 </Label>
                                             </center>
                                             <left>
-                                                <ComboBox fx:id="driveComboBoxRight" focusTraversable="false" onAction="#driveComboBoxRight_onAction" prefHeight="25.0" prefWidth="65.0" BorderPane.alignment="CENTER">
+                                                <ComboBox fx:id="driveComboBoxRight" focusTraversable="false"
+                                                          onAction="#driveComboBoxRight_onAction" prefHeight="25.0"
+                                                          prefWidth="65.0" BorderPane.alignment="CENTER">
                                                     <BorderPane.margin>
-                                                        <Insets bottom="5.0" left="5.0" top="5.0" />
+                                                        <Insets bottom="5.0" left="5.0" top="5.0"/>
                                                     </BorderPane.margin>
                                                 </ComboBox>
                                             </left>
-                                 <right>
-                                    <ProgressIndicator fx:id="progressIndicatorRight" progress="0.0" visible="false" BorderPane.alignment="CENTER" />
-                                 </right>
+                                            <right>
+                                                <ProgressIndicator fx:id="progressIndicatorRight" progress="0.0"
+                                                                   visible="false" BorderPane.alignment="CENTER"/>
+                                            </right>
                                         </BorderPane>
                                     </children>
                                 </HBox>
                             </children>
                         </VBox>
-                        <TableView fx:id="tableViewLeft" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" GridPane.rowIndex="1">
+                        <TableView fx:id="tableViewLeft" prefHeight="200.0" prefWidth="200.0"
+                                   tableMenuButtonVisible="true" GridPane.rowIndex="1">
                             <columns>
-                                <TableColumn fx:id="nameColLeft" editable="false" prefWidth="75.0" text="Name" />
-                                <TableColumn fx:id="typeColLeft" editable="false" prefWidth="75.0" text="Type" />
-                                <TableColumn fx:id="sizeColLeft" prefWidth="75.0" text="Size" />
-                                <TableColumn fx:id="dateColLeft" editable="false" prefWidth="75.0" text="Date" />
+                                <TableColumn fx:id="nameColLeft" editable="false" prefWidth="75.0" text="Name"/>
+                                <TableColumn fx:id="typeColLeft" editable="false" prefWidth="75.0" text="Type"/>
+                                <TableColumn fx:id="sizeColLeft" prefWidth="75.0" text="Size"/>
+                                <TableColumn fx:id="dateColLeft" editable="false" prefWidth="75.0" text="Date"/>
                             </columns>
                         </TableView>
-                        <TableView fx:id="tableViewRight" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TableView fx:id="tableViewRight" prefHeight="200.0" prefWidth="200.0"
+                                   tableMenuButtonVisible="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <columns>
-                                <TableColumn fx:id="nameColRight" editable="false" prefWidth="75.0" text="Name" />
-                                <TableColumn fx:id="typeColRight" editable="false" prefWidth="75.0" text="Type" />
-                                <TableColumn fx:id="sizeColRight" prefWidth="75.0" text="Size" />
-                                <TableColumn fx:id="dateColRight" editable="false" prefWidth="75.0" text="Date" />
+                                <TableColumn fx:id="nameColRight" editable="false" prefWidth="75.0" text="Name"/>
+                                <TableColumn fx:id="typeColRight" editable="false" prefWidth="75.0" text="Type"/>
+                                <TableColumn fx:id="sizeColRight" prefWidth="75.0" text="Size"/>
+                                <TableColumn fx:id="dateColRight" editable="false" prefWidth="75.0" text="Date"/>
                             </columns>
                         </TableView>
                     </children>
