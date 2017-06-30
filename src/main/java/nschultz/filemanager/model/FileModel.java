@@ -11,44 +11,44 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
  */
-package main.nschultz.filemanager.model;
+package nschultz.filemanager.model;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class FileModel {
 
-    private final StringProperty name;
-    private final StringProperty type;
-    private final StringProperty size;
-    private final StringProperty date;
-    private final StringProperty absolutePath;
+  private final StringProperty name;
+  private final StringProperty type;
+  private final StringProperty size;
+  private final StringProperty date;
+  private final StringProperty absolutePath;
 
-    public FileModel(String name, String type, String size, String date, String absolutePath) {
-        this.name = new SimpleStringProperty(name);
-        this.type = new SimpleStringProperty(type);
-        this.size = new SimpleStringProperty(size);
-        this.date = new SimpleStringProperty(date);
-        this.absolutePath = new SimpleStringProperty(absolutePath);
-    }
+  public FileModel(String name, String type, String size, String date, String absolutePath) {
+    this.name = new SimpleStringProperty(name);
+    this.type = new SimpleStringProperty(type);
+    this.size = new SimpleStringProperty(size);
+    this.date = new SimpleStringProperty(date);
+    this.absolutePath = new SimpleStringProperty(absolutePath);
+  }
 
-    public String getName() {
-        return name.get();
-    }
+  public String getName() {
+    return name.get();
+  }
 
-    public String getType() {
-        return type.get();
-    }
+  public String getType() {
+    return type.get();
+  }
 
-    public String getSize() {
-        return size.get();
-    }
+  public String getSize() {
+    return size.get();
+  }
 
-    public String getDate() {
-        return date.get();
-    }
+  public String getDate() {
+    return date.get();
+  }
 
-    public String getAbsolutePath() {
-        return absolutePath.get();
-    }
+  public String getAbsolutePath() {
+    return absolutePath.get();
+  }
 }

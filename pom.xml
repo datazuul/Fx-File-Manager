@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <groupId>de.nschultz</groupId>
+  <artifactId>filemanager</artifactId>
+  <version>0.2.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>Fx-File-Manager</name>
+  
+  <description>A File Manager written in Java.</description>
+  
+  <url>https://github.com/SNException/Fx-File-Manager</url>
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://github.com/SNException/Fx-File-Manager/blob/master/LICENSE</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  
+  <developers>
+    <developer>
+      <name>Niklas Schultz</name>
+      <id>SNException</id>
+    </developer>
+  </developers>
+  <issueManagement>
+    <url>https://github.com/SNException/Fx-File-Manager/issues</url>
+    <system>GitHub Issues</system>
+  </issueManagement>
+  <scm>
+    <connection>https://github.com/SNException/Fx-File-Manager.git</connection>
+    <developerConnection>git@github.com:SNException/Fx-File-Manager.git</developerConnection>
+    <url>https://github.com/SNException/Fx-File-Manager</url>
+  </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+</project>

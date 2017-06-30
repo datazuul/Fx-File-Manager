@@ -11,18 +11,18 @@ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMA
 ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
  */
-package main.nschultz.filemanager.util;
+package nschultz.filemanager.util;
 
 public final class Version {
 
-    public static final String MAJOR_RELEASE = "0";
-    public static final String MINOR_RELEASE = "2";
-    public static final String PATCH_LEVEL = "0";
+  public static final String MAJOR_RELEASE = "0";
+  public static final String MINOR_RELEASE = "2";
+  public static final String PATCH_LEVEL = "0";
 
-    private Version() {
-    }
+  private Version() {
+  }
 
-    public static String getVersion() {
-        return "v" + MAJOR_RELEASE + "." + MINOR_RELEASE + "." + PATCH_LEVEL;
-    }
+  public static String getVersion() {
+    return "v" + MAJOR_RELEASE + "." + MINOR_RELEASE + "." + PATCH_LEVEL;
+  }
 }
